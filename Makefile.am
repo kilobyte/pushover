@@ -193,3 +193,20 @@ dist-win32: all
 	cd '$(abs_builddir)' && zip -r9 $(win32dir).zip $(win32dir)
 	$(RM) -r   '$(abs_builddir)/$(win32dir)'
 
+data/dominos.png: data/sources/dominos.png
+	cp $^ $@
+
+# fixme: all domino{0000..1499}.png
+DOMINOES = data/sources/data/domino0000.png
+
+$(DOMINOES): data/sources/domino.ini data/sources/*.pov \
+	     data/sources/crashes/*.png data/sources/explosions/*.png
+	mkdir -p data/sources/data
+	cd data/sources && povray -D domino.ini
+
+data/sources/dominos.png: assembler data/sources/dominos.lst $(DOMINOES)
+	cd data/sources && $(abs_builddir)/assembler dominos.png 58 2 200 dominos.lst
+
+noinst_PROGRAMS = assembler
+assembler_SOURCES = data/sources/assembler.cpp data/sources/pngsaver.h
+assembler_LDADD = -lpng -lSDL -lSDL_image
