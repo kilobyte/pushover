@@ -16,7 +16,6 @@ sed -n '/^\(Description\)$/,/^[^|]/ s,^| \(.*\)$,_("\1"),p' `find -name '*.level
 sed -n '/^\(Tutorial\)$/,/^[^|]/ s,^| \(.*\)$,_("\1"),p' `find -name '*.level' | grep -v "levels/tests"` >>po/leveltexts.txt
 
 autoreconf -i -s
-./configure "$@"
 
 # regenerate the domino.png file, this requires povray
 cd data/sources
